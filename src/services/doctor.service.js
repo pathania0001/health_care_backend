@@ -10,10 +10,6 @@ require("../repositories/doctor.repo");
 const doctorRepository =
 new DoctorRepository();
 
-
-
-// CREATE DOCTOR
-
 const createDoctor = async (data) => {
 
   try {
@@ -51,10 +47,6 @@ const createDoctor = async (data) => {
 
 };
 
-
-
-// GET ALL DOCTORS
-
 const getAllDoctors = async () => {
 
   try {
@@ -72,19 +64,11 @@ const getAllDoctors = async () => {
 
 };
 
-
-
-// GET DOCTOR BY ID
-
 const getDoctorById = async (id) => {
 
   return await doctorRepository.get(id);
 
 };
-
-
-
-// DELETE DOCTOR
 
 const destroyDoctor = async (id) => {
 
@@ -92,16 +76,11 @@ const destroyDoctor = async (id) => {
 
 };
 
-
-
-// UPDATE DOCTOR
-
 const updateDoctor = async (id, data) => {
 
   return await doctorRepository.update(id, data);
 
 };
-
 
 module.exports = {
 

@@ -12,19 +12,19 @@ new PatientRepository();
 
 
 
-// CREATE PATIENT
 
 const createPatient = async (data) => {
 
-  try {
+  try { 
+   // console.log("i am getting data :",data)
 
     const patient =
       await patientRepository.create(data);
-
+     
     return patient;
 
   } catch (error) {
-
+   console.log("my error :",error)
     if (
       error.name === "SequelizeValidationError"
     ) {
@@ -53,8 +53,6 @@ const createPatient = async (data) => {
 
 
 
-// GET ALL PATIENTS
-
 const getAllPatients = async (userId) => {
 
   try {
@@ -76,9 +74,6 @@ const getAllPatients = async (userId) => {
 
 };
 
-
-
-// GET PATIENT BY ID
 
 const getPatientById = async (id) => {
 
@@ -113,17 +108,12 @@ const getPatientById = async (id) => {
 
 
 
-// DELETE PATIENT
-
 const destroyPatient = async (id) => {
 
   return await patientRepository.destroy(id);
 
 };
 
-
-
-// UPDATE PATIENT
 
 const updatePatient = async (id, data) => {
 

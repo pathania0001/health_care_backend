@@ -6,8 +6,17 @@ require("http-status-codes");
 const { AppError } =
 require("../utils");
 
-const generateToken =
-require("../utils/common/jwt");
+const {
+
+  generateAccessToken,
+
+  generateRefreshToken,
+
+  verifyRefreshToken
+
+} = require(
+  "../utils/common/jwt"
+);
 
 const UserRepository =
 require("../repositories/user.repo");
@@ -15,17 +24,16 @@ require("../repositories/user.repo");
 const userRepository =
 new UserRepository();
 
-
-
-// REGISTER USER
-
-const registerUser = async (data) => {
+const registerUser =
+async (data) => {
 
   try {
 
     const existingUser =
       await userRepository
-        .getUserByEmail(data.email);
+        .getUserByEmail(
+          data.email
+        );
 
     if (existingUser) {
 
@@ -36,8 +44,6 @@ const registerUser = async (data) => {
 
     }
 
-    // Hash password
-
     const hashedPassword =
       await bcrypt.hash(
         data.password,
@@ -46,33 +52,34 @@ const registerUser = async (data) => {
 
     const user =
       await userRepository.create({
-
         name: data.name,
         email: data.email,
         password: hashedPassword
-
       });
 
-    return user;
-
-  } catch (error) {
-
-    if (
-      error.name === "SequelizeValidationError"
-    ) {
-
-      let explanation = [];
-
-      error.errors.forEach(err => {
-        explanation.push(err.message);
-      });
-
-      throw new AppError(
-        explanation,
-        StatusCodes.BAD_REQUEST
+    const accessToken =
+      generateAccessToken(
+        user.id
       );
 
-    }
+    const refreshToken =
+      generateRefreshToken(
+        user.id
+      );
+
+    await userRepository
+      .updateRefreshToken(
+        user.id,
+        refreshToken
+      );
+
+    return {
+      user,
+      accessToken,
+      refreshToken
+    };
+
+  } catch (error) {
 
     throw error;
 
@@ -80,17 +87,16 @@ const registerUser = async (data) => {
 
 };
 
-
-
-// LOGIN USER
-
-const loginUser = async (data) => {
+const loginUser =
+async (data) => {
 
   try {
 
     const user =
       await userRepository
-        .getUserByEmail(data.email);
+        .getUserByEmail(
+          data.email
+        );
 
     if (!user) {
 
@@ -116,12 +122,26 @@ const loginUser = async (data) => {
 
     }
 
-    const token =
-      generateToken(user.id);
+    const accessToken =
+      generateAccessToken(
+        user.id
+      );
+
+    const refreshToken =
+      generateRefreshToken(
+        user.id
+      );
+
+    await userRepository
+      .updateRefreshToken(
+        user.id,
+        refreshToken
+      );
 
     return {
       user,
-      token
+      accessToken,
+      refreshToken
     };
 
   } catch (error) {
@@ -132,10 +152,90 @@ const loginUser = async (data) => {
 
 };
 
+const refreshAccessToken =
+async (refreshToken) => {
+
+  try {
+
+    if (!refreshToken) {
+
+      throw new AppError(
+        "Refresh token required",
+        StatusCodes.BAD_REQUEST
+      );
+
+    }
+
+    const decoded =
+      verifyRefreshToken(
+        refreshToken
+      );
+
+    const user =
+      await userRepository
+        .getById(
+          decoded.id
+        );
+
+    if (!user) {
+
+      throw new AppError(
+        "User not found",
+        StatusCodes.NOT_FOUND
+      );
+
+    }
+
+    if (
+      user.refreshToken !==
+      refreshToken
+    ) {
+
+      throw new AppError(
+        "Invalid refresh token",
+        StatusCodes.UNAUTHORIZED
+      );
+
+    }
+
+    const newAccessToken =
+      generateAccessToken(
+        user.id
+      );
+
+    return {
+      accessToken: newAccessToken
+    };
+
+  } catch (error) {
+
+    throw error;
+
+  }
+
+};
+
+const logoutUser =
+async (userId) => {
+
+  await userRepository
+    .updateRefreshToken(
+      userId,
+      null
+    );
+
+  return true;
+
+};
 
 module.exports = {
 
   registerUser,
-  loginUser
+
+  loginUser,
+
+  refreshAccessToken,
+
+  logoutUser
 
 };

@@ -135,7 +135,7 @@ combined.logger.file
 
 
 ##just uncomment these  files below
-src/config/config.json
+##src/config/config.json
 
 
 

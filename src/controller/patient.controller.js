@@ -10,11 +10,6 @@ const {
 
 
 
-/*
-POST /api/v1/patients
-Create Patient
-*/
-
 const registerPatient = async (req, res) => {
 
   try {
@@ -25,8 +20,6 @@ const registerPatient = async (req, res) => {
         name: req.body.name,
         age: req.body.age,
         gender: req.body.gender,
-
-        // important — logged in user
         userId: req.userId
 
       });
@@ -50,11 +43,6 @@ const registerPatient = async (req, res) => {
 };
 
 
-
-/*
-GET /api/v1/patients
-Get all patients of logged user
-*/
 
 const getAllPatients = async (req, res) => {
 
@@ -84,9 +72,6 @@ const getAllPatients = async (req, res) => {
 
 
 
-/*
-GET /api/v1/patients/:id
-*/
 
 const getPatientById = async (req, res) => {
 
@@ -116,10 +101,6 @@ const getPatientById = async (req, res) => {
 
 
 
-/*
-DELETE /api/v1/patients/:id
-*/
-
 const destroyPatient = async (req, res) => {
 
   try {
@@ -148,9 +129,7 @@ const destroyPatient = async (req, res) => {
 
 
 
-/*
-PUT /api/v1/patients/:id
-*/
+
 
 const updatePatient = async (req, res) => {
 

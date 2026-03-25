@@ -1,23 +1,47 @@
-const CrudRepositories = require("./crud.repo");
-const { User } = require("../models");
+const { User } =
+require("../models");
 
-class UserRepository extends CrudRepositories {
+class UserRepository {
 
   constructor() {
-    super(User);
+
+    this.model = User;
+
+  }
+
+  async create(data) {
+
+    return await this.model.create(data);
+
   }
 
   async getUserByEmail(email) {
 
-    const response =
-      await User.findOne({
-        where: { email }
-      });
+    return await this.model.findOne({
+      where: { email }
+    });
 
-    return response;
+  }
+
+  async getById(id) {
+
+    return await this.model.findByPk(id);
+
+  }
+
+  async updateRefreshToken(
+    userId,
+    refreshToken
+  ) {
+
+    return await this.model.update(
+      { refreshToken },
+      { where: { id: userId } }
+    );
 
   }
 
 }
 
-module.exports = UserRepository;
+module.exports =
+UserRepository;

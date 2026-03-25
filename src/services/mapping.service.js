@@ -10,10 +10,6 @@ require("../repositories/mapping.repo");
 const mappingRepository =
 new MappingRepository();
 
-
-
-// ASSIGN DOCTOR TO PATIENT
-
 const assignDoctor = async (data) => {
 
   try {
@@ -38,10 +34,6 @@ const assignDoctor = async (data) => {
 
 };
 
-
-
-// GET DOCTORS BY PATIENT
-
 const getDoctorsByPatient = async (patientId) => {
 
   return await mappingRepository
@@ -49,16 +41,11 @@ const getDoctorsByPatient = async (patientId) => {
 
 };
 
-
-
-// REMOVE MAPPING
-
 const removeMapping = async (id) => {
 
   return await mappingRepository.destroy(id);
 
 };
-
 
 module.exports = {
 

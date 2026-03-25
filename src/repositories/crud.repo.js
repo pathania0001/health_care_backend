@@ -1,4 +1,3 @@
-// repositories/crud.repo.js
 
 const { StatusCodes } = require("http-status-codes");
 const { AppError } = require("../utils");

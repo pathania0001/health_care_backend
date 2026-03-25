@@ -9,12 +9,6 @@ const {
 } = require('../utils/common');
 
 
-
-/*
-POST /api/v1/mappings
-Assign doctor to patient
-*/
-
 const assignDoctor = async (req, res) => {
 
   try {
@@ -22,13 +16,10 @@ const assignDoctor = async (req, res) => {
     const mapping =
       await Service.Mapping
         .assignDoctor({
-
           patientId:
             req.body.patientId,
-
           doctorId:
             req.body.doctorId
-
         });
 
     SuccessResponse.data = mapping;
@@ -50,20 +41,13 @@ const assignDoctor = async (req, res) => {
 };
 
 
-
-/*
-GET /api/v1/mappings/:patientId
-*/
-
 const getDoctorsByPatient = async (req, res) => {
 
   try {
 
     const doctors =
       await Service.Mapping
-        .getDoctorsByPatient(
-          req.params.patientId
-        );
+        .getDoctorsByPatient(req.params.patientId);
 
     SuccessResponse.data = doctors;
 
@@ -83,11 +67,6 @@ const getDoctorsByPatient = async (req, res) => {
 
 };
 
-
-
-/*
-DELETE /api/v1/mappings/:id
-*/
 
 const removeMapping = async (req, res) => {
 

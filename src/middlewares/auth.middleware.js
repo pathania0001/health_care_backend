@@ -1,6 +1,13 @@
-const jwt = require("jsonwebtoken");
+const {
 
-module.exports = (req, res, next) => {
+  verifyAccessToken
+
+} = require(
+  "../utils/common/jwt"
+);
+
+module.exports =
+(req, res, next) => {
 
   try {
 
@@ -9,9 +16,16 @@ module.exports = (req, res, next) => {
 
     if (!authHeader) {
 
-      return res.status(401).json({
-        message: "Token missing"
-      });
+      return res
+
+        .status(401)
+
+        .json({
+
+          message:
+            "Token missing"
+
+        });
 
     }
 
@@ -19,20 +33,27 @@ module.exports = (req, res, next) => {
       authHeader.split(" ")[1];
 
     const decoded =
-      jwt.verify(
-        token,
-        process.env.JWT_SECRET
+      verifyAccessToken(
+        token
       );
 
-    req.userId = decoded.id;
+    req.userId =
+      decoded.id;
 
     next();
 
   } catch (error) {
 
-    return res.status(401).json({
-      message: "Invalid token"
-    });
+    return res
+
+      .status(401)
+
+      .json({
+
+        message:
+          "Invalid token"
+
+      });
 
   }
 

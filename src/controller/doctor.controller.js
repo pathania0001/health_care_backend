@@ -1,7 +1,6 @@
 const Service = require('../services');
 
-const { StatusCodes } =
-require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 
 const {
   ErrorResponse,
@@ -9,23 +8,12 @@ const {
 } = require('../utils/common');
 
 
-
-/*
-POST /api/v1/doctors
-*/
-
 const registerDoctor = async (req, res) => {
-
   try {
-
-    const doctor =
-      await Service.Doctor.createDoctor({
-
-        name: req.body.name,
-        specialization:
-          req.body.specialization
-
-      });
+    const doctor = await Service.Doctor.createDoctor({
+      name: req.body.name,
+      specialization: req.body.specialization
+    });
 
     SuccessResponse.data = doctor;
 
@@ -42,22 +30,12 @@ const registerDoctor = async (req, res) => {
       .json(ErrorResponse);
 
   }
-
 };
 
 
-
-/*
-GET /api/v1/doctors
-*/
-
 const getAllDoctors = async (req, res) => {
-
   try {
-
-    const doctors =
-      await Service.Doctor
-        .getAllDoctors();
+    const doctors = await Service.Doctor.getAllDoctors();
 
     SuccessResponse.data = doctors;
 
@@ -74,22 +52,12 @@ const getAllDoctors = async (req, res) => {
       .json(ErrorResponse);
 
   }
-
 };
 
 
-
-/*
-GET /api/v1/doctors/:id
-*/
-
 const getDoctorById = async (req, res) => {
-
   try {
-
-    const doctor =
-      await Service.Doctor
-        .getDoctorById(req.params.id);
+    const doctor = await Service.Doctor.getDoctorById(req.params.id);
 
     SuccessResponse.data = doctor;
 
@@ -106,22 +74,12 @@ const getDoctorById = async (req, res) => {
       .json(ErrorResponse);
 
   }
-
 };
 
 
-
-/*
-DELETE /api/v1/doctors/:id
-*/
-
 const destroyDoctor = async (req, res) => {
-
   try {
-
-    const response =
-      await Service.Doctor
-        .destroyDoctor(req.params.id);
+    const response = await Service.Doctor.destroyDoctor(req.params.id);
 
     SuccessResponse.data = response;
 
@@ -138,25 +96,15 @@ const destroyDoctor = async (req, res) => {
       .json(ErrorResponse);
 
   }
-
 };
 
 
-
-/*
-PUT /api/v1/doctors/:id
-*/
-
 const updateDoctor = async (req, res) => {
-
   try {
-
-    const doctor =
-      await Service.Doctor
-        .updateDoctor(
-          req.params.id,
-          req.body
-        );
+    const doctor = await Service.Doctor.updateDoctor(
+      req.params.id,
+      req.body
+    );
 
     SuccessResponse.data = doctor;
 
@@ -173,16 +121,13 @@ const updateDoctor = async (req, res) => {
       .json(ErrorResponse);
 
   }
-
 };
 
 
 module.exports = {
-
   registerDoctor,
   getAllDoctors,
   getDoctorById,
   destroyDoctor,
   updateDoctor
-
 };
